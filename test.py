@@ -1,7 +1,9 @@
+import mover
 BOARD_SIZE = 4
 BLACK = "B"
 WHITE = "W"
 PLAYERS = {BLACK: "Black", WHITE: "White"}
+
 
 def create_board():
     board = [[None] * BOARD_SIZE for _ in range(BOARD_SIZE)]
@@ -11,8 +13,6 @@ def create_board():
     board[Y][Y] = WHITE
     board[X][X] = WHITE
     board[Y][X] = BLACK
-
-   
     return board
 
 def print_board(board):
@@ -25,6 +25,7 @@ def is_valid_move(board, x, y, player):
         return False
     other_player = BLACK if player == WHITE else WHITE
     directions = ((-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1))
+    directions = ((-1,0),(0,-1),(0,1),(1,0))
     for dx, dy in directions:
         x_, y_ = x + dx, y + dy
         if not (0 <= x_ < BOARD_SIZE and 0 <= y_ < BOARD_SIZE):
@@ -42,6 +43,7 @@ def make_move(board, x, y, player):
     board[x][y] = player
     other_player = BLACK if player == WHITE else WHITE
     directions = ((-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1))
+    directions = ((-1,0),(0,-1),(0,1),(1,0))
     flipped = []
     for dx, dy in directions:
         x_, y_ = x + dx, y + dy
@@ -56,7 +58,7 @@ def make_move(board, x, y, player):
             x_, y_ = x_ + dx, y_ + dy
         if 0 <= x_ < BOARD_SIZE and 0 <= y_ < BOARD_SIZE and board[x_][y_] == player:
             flipped.extend(temp_flipped)
-    print(flipped)
+    # print(flipped)
     for x_, y_ in flipped:
         board[x_][y_] = player
 
@@ -91,7 +93,8 @@ def play_game():
         valid_moves = get_valid_moves(board, current_player)
         if valid_moves:
             print(f"{PLAYERS[current_player]}'s turn")
-            x, y = input("Enter your move (e.g. b3): ").lower().strip()
+            # x, y = input("Enter your move (e.g. b3): ").lower().strip()
+            x,y=mover.get_move(board,current_player)
             x, y = ord(x) - ord("a"), int(y) - 1
             # x,y =y,x
             print(x,y)
